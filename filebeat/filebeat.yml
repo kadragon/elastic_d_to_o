@@ -1,0 +1,30 @@
+# filebeat setup -e -c "/Users/kdo/Dev/elasticsearch/elastic_d_to_o/filebeat/filebeat.yml"
+# filebeat -e -c "/Users/kdo/Dev/elasticsearch/elastic_d_to_o/filebeat/filebeat.yml"
+
+filebeat.inputs:
+  - type: log
+    enabled: true
+    paths:
+      - /opt/homebrew/var/log/elasticsearch/elasticsearch_kdo.log
+    include_lines: ["^ERR", "^WARN"]
+    exclude_lines: ["^DBG"]
+    exclude_files: ['\.gz$']
+
+output.elasticsearch:
+  hosts: ["localhost:9200"]
+  username: "elastic"
+  password: "PASSWORD"
+
+setup.kibana:
+  hosts: "localhost:5601"
+  username: "elastic"
+  password: "PASSWORD"
+# filebeat.config.modules:
+# path: ${path.config}/modules.d/*.yml
+# path: /Users/kdo/Dev/elasticsearch/elastic_d_to_o/filebeat/modules.d/logstash.yml
+
+monitoring.enabled: true
+monitoring.elasticsearch:
+  hosts: ["localhost:9200"]
+  username: "elastic"
+  password: "PASSWORD"
